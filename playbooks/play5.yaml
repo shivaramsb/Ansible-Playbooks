@@ -1,0 +1,16 @@
+---
+  - name: This playbook for installing multiple apps using loop
+    hosts: all
+    become: true
+    tasks: 
+      - name: Task1 [Installing mysql/net-tools/sysstat/dovecoat]
+        package: 
+          name: "{{ item }}"
+          state: latest
+        loop:
+          - mysql
+          - net-tools
+          - sysstat
+          - dovecot
+        when:
+          ansible_hostname == "AC1"

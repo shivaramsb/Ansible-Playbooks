@@ -1,0 +1,26 @@
+---
+- name: Create Groups and Users
+  hosts: all
+  become: true
+  tasks:
+    - name: Create groups
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - group1
+        - group2
+        - group3
+        - group4
+
+    - name: Create users and assign them to existing groups
+      user:
+        name: "{{ item.name }}"
+        state: present
+        group: "{{ item.group }}"
+      loop:
+        - { name: user11, group: group1 }
+        - { name: user12, group: group2 }
+        - { name: user13, group: group3 }
+        - { name: user14, group: group4 }
+

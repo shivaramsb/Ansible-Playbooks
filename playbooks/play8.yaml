@@ -1,0 +1,26 @@
+---
+- name: Install packages with loop and vars
+  hosts: all
+  become: true
+  remote_user: Shivaram
+  tasks:
+    - name: Install packages on Ubuntu
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - git
+        - wget
+        - mysql-server  # Specific to Ubuntu
+      when: ansible_os_family == "Debian"
+
+    - name: Install packages on RHEL
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - git
+        - wget
+        - mysql  # Specific to RHEL
+      when: ansible_os_family == "RedHat"
+

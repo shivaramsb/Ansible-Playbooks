@@ -1,0 +1,42 @@
+---
+  - name: Create a multiple users
+    hosts: all
+    become: true
+    tasks:
+      - name: creating a user u101
+        user:
+          name: u101
+          state: present
+          shell: /bin/sh
+          create_home: yes
+          home: /home/user101
+        tags:
+          - task1
+      - name: creating a user u102
+        user:
+          name: u102
+          state: present
+          shell: /bin/sh
+          create_home: yes
+          home: /home/user102
+        tags:
+          - task2
+      - name: creating a user u103
+        user:
+          name: u103
+          state: present
+          shell: /bin/sh
+          create_home: yes
+          home: /home/user103
+        tags:
+          - task3
+      - name: creating a user u104
+        user:
+          name: u104
+          state: present
+          shell: /bin/sh
+          create_home: yes
+          home: /home/user104
+        tags:
+          - task4
+

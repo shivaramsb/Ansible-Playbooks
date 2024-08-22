@@ -1,0 +1,6 @@
+- name: Install Apache on Ubuntu
+  apt:
+    name: apache2
+    state: present
+  when: ansible_os_family == "Debian"
+

@@ -1,0 +1,38 @@
+---
+- name: This playbook installs Postfix, NTP, and Apache
+  hosts: AC1
+  become: true
+  tasks:
+    - name: Task1 [Setting up NTP server]
+      yum:
+        name: chrony
+        state: latest
+
+    - name: Task2 [Setting up mail server]
+      yum:
+        name: postfix
+        state: present
+
+    - name: Task3 [Setting up Apache server]
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Task4 [Starting and enabling Apache service]
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Task5 [Starting and enabling Postfix service]
+      service:
+        name: postfix
+        state: started
+        enabled: yes
+
+    - name: Task6 [Starting and enabling NTP service]
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+

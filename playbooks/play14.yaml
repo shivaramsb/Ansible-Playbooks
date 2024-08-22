@@ -1,0 +1,12 @@
+---
+  - name: Implementing reusable code concept
+    hosts: all
+    gather_facts: true
+    remote_user: Shivaram
+    become: true
+    tasks:
+      - import_tasks: task1.yaml
+      - include_tasks: task2.yaml
+      - import_tasks: task3.yaml
+      - include_tasks: task4.yaml
+

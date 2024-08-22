@@ -1,0 +1,9 @@
+--- 
+  - name: Install NGINX
+    hosts: all
+    become: true
+    tasks: 
+      - name: Installing NGINX
+        package: 
+          name: nginx
+          state: latest

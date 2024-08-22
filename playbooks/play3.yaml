@@ -1,0 +1,21 @@
+---
+- name: Installing Apache and copying index file
+  hosts: AC1
+  become: true
+  tasks:
+    - name: Install Apache
+      package:
+        name: httpd
+        state: latest
+
+    - name: Copy index.html to the web server directory
+      copy:
+        src: /root/playbooks/index.html
+        dest: /var/www/html/index.html
+
+    - name: Start and enable Apache server
+      service:
+        name: httpd
+        state: started
+        enabled: true
+

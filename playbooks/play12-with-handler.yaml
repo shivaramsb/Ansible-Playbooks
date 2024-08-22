@@ -1,0 +1,23 @@
+---
+  - name: Building and setup web server
+    hosts: AC1
+    gather_facts: true
+    remote_user: Shivaram
+    become: true
+    tasks:
+      - name: Installing apache webserver
+        yum:
+          name: httpd
+          state: latest
+        notify: Start apache
+      - name: Defining the contents
+        copy:
+          content: "Hello My name is Shivaram"
+          dest: /var/www/html/index.html
+        notify: Start Apache
+    handlers:
+      - name: Start apache
+        service:
+          name: httpd
+          state: restarted
+          enabled: true

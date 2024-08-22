@@ -1,0 +1,17 @@
+---
+  - name: This playbook for installing Postfix/NTP/Apache
+    hosts: all
+    become: true
+    tasks: 
+      - name: Task1 [Apache2 for Ubuntu]
+        apt: 
+          name: apache2
+          state: latest
+        when:
+          ansible_distribution == "Ubuntu"
+      - name: Task2 [HTTPD for RHEL]
+        yum:
+          name: httpd
+          state: present
+        when:
+          ansible_distribution == "RedHat"

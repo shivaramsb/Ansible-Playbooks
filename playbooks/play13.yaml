@@ -1,0 +1,37 @@
+---
+  - name: Implementing reusable code concept
+    hosts: all
+    gather_facts: true
+    remote_user: Shivaram
+    become: true
+    tasks:
+      - name: Install Apache on RHEL
+        yum: 
+          name: httpd
+          state: present
+        when: ansible_os_family == "RedHat"
+
+      - name: Install Apache on Ubuntu
+        apt: 
+          name: apache2
+          state: present
+        when: ansible_os_family == "Debian"
+
+      - name: Installing Java on Redhat Family
+        yum:
+          name: java
+          state: present
+        when: ansible_os_family == "RedHat"
+
+      - name: Update apt cache
+        apt:
+          update_cache: yes
+        when: ansible_os_family == "Debian"
+
+
+      - name: Installing Java on Ubuntu Family
+        apt:
+          name: openjdk-11-jdk
+          state: present
+        when: ansible_os_family == "Debian"
+

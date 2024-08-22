@@ -1,0 +1,17 @@
+---
+  - name: Install packages with loop and vars
+    hosts: all
+    vars:
+      myapp:
+        - git
+        - wget
+        - mysql
+    become: true
+    remote_user: Shivaram
+    tasks:
+      - name: Install postfix and dovecot
+        package:
+          name: "{{ item }}"
+          state: latest
+        loop: "{{ myapp }}"
+
