@@ -1,0 +1,18 @@
+---
+# tasks file for httpd
+- name: Install Apache
+  package:
+    name: httpd
+    state: latest
+
+- name: Copy index.html to the web server directory
+  copy:
+    src: /root/playbooks/httpd/files/index.html
+    dest: /var/www/html/index.html
+
+- name: Start and enable Apache server
+  service:
+    name: httpd
+    state: started
+    enabled: true
+

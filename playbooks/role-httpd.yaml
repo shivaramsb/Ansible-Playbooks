@@ -1,0 +1,7 @@
+---
+- name: Installing Apache and copying index file
+  hosts: AC1
+  become: true
+  roles:
+    - httpd
+
