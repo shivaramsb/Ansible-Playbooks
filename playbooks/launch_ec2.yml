@@ -1,0 +1,25 @@
+---
+- name: Launch EC2 instance
+  hosts: all
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Start an instance with a public IP address
+      amazon.aws.ec2_instance:
+        name: "public-compute-instance"
+        key_name: "Ansible"
+        instance_type: t2.micro
+        security_group: default
+        network:
+          assign_public_ip: true
+        image_id: ami-066784287e358dad1
+        region: us-east-1
+        aws_access_key: "your_access_key_here"
+        aws_secret_key: "your_secret_key_here"
+
+        tags:
+          Environment: Testing
+      register: ec2
+
+    - debug:
+        var: ec2
