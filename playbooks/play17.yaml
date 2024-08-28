@@ -1,0 +1,21 @@
+---
+- name: Implement block and rescue
+  hosts: all
+  become: yes
+  tasks:
+    - block:
+        - name: Install Apache2 on Debian-based systems
+          apt:
+            name: apache2
+            state: present
+            update_cache: yes
+          when: ansible_os_family == 'Debian'
+
+      rescue:
+        - name: Install httpd on RHEL-based systems
+          yum:
+            name: httpd
+            state: present
+            update_cache: yes
+          when: ansible_os_family == 'RedHat'
+
