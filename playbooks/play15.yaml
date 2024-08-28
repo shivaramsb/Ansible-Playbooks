@@ -1,0 +1,66 @@
+---
+- name: Install and manage httpd with error handling
+  hosts: all
+  become: yes
+  vars:
+    httpd_service_name_rhel: httpd
+    httpd_service_name_ubuntu: apache2
+    httpd_package_name_rhel: httpd
+    httpd_package_name_ubuntu: apache2
+
+  tasks:
+    - name: Install httpd on RHEL systems
+      yum:
+        name: "{{ httpd_package_name_rhel }}"
+        state: present
+      when: ansible_os_family == "RedHat"
+      ignore_errors: yes
+      register: httpd_rhel_install
+
+    - name: Install httpd on Ubuntu systems
+      apt:
+        name: "{{ httpd_package_name_ubuntu }}"
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+      ignore_errors: yes
+      register: httpd_ubuntu_install
+
+    - name: Check if httpd installation succeeded on RHEL
+      debug:
+        msg: "httpd installation failed on RHEL."
+      when: httpd_rhel_install is failed
+
+    - name: Check if httpd installation succeeded on Ubuntu
+      debug:
+        msg: "httpd installation failed on Ubuntu."
+      when: httpd_ubuntu_install is failed
+
+    - name: Start and enable httpd service on RHEL
+      service:
+        name: "{{ httpd_service_name_rhel }}"
+        state: started
+        enabled: yes
+      when: ansible_os_family == "RedHat" and httpd_rhel_install is succeeded
+      ignore_errors: yes
+      register: httpd_rhel_service
+
+    - name: Start and enable apache2 service on Ubuntu
+      service:
+        name: "{{ httpd_service_name_ubuntu }}"
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian" and httpd_ubuntu_install is succeeded
+      ignore_errors: yes
+      register: httpd_ubuntu_service
+
+    - name: Check if httpd service start succeeded on RHEL
+      debug:
+        msg: "httpd service failed to start on RHEL."
+      when: httpd_rhel_service is failed
+
+    - name: Check if apache2 service start succeeded on Ubuntu
+      debug:
+        msg: "apache2 service failed to start on Ubuntu."
+      when: httpd_ubuntu_service is failed
+
