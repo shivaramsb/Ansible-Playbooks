@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install httpd on RHEL/Ubuntu
+      package:
+        name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
+        state: present
+      ignore_errors: yes
+      register: install_result
+
+    - name: Start httpd service
+      service:
+        name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
+        state: started
+        enabled: yes
+      when: install_result is succeeded
+      ignore_errors: yes
+      register: service_result
+
+    - name: Debug installation errors
+      debug:
+        msg: "Installation failed: {{ install_result.msg }}"
+      when: install_result is failed
+
